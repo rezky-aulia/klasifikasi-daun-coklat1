@@ -8,7 +8,7 @@ from io import BytesIO
 import os
 import time
 from fpdf import FPDF
-import requests # <=== TAMBAH INI (Wajib untuk mendownload file)
+import gdown
 
 # Import modul buatan kita sendiri
 from modules.database_helper import init_db, save_scan, get_history, delete_session
@@ -27,29 +27,28 @@ st.set_page_config(
 # =====================================================================
 # === TAMBAHAN BARU: LOGIKA DOWNLOAD MODEL DARI GOOGLE DRIVE ===
 # =====================================================================
-def download_file(url, destination):
-    # Cek apakah file sudah ada, jika belum, download!
+def download_model_gdrive(file_id, destination):
+
     if not os.path.exists(destination):
-        with st.spinner(f'Mengunduh "otak" AI ({destination}) dari server... Mohon tunggu sebentar.'):
-            response = requests.get(url, stream=True)
-            with open(destination, "wb") as f:
-                for chunk in response.iter_content(chunk_size=8192):
-                    if chunk:
-                        f.write(chunk)
 
-# GANTI TEKS DI BAWAH INI DENGAN DIRECT LINK GOOGLE DRIVE KAMU
-LINK_CNN = "https://drive.google.com/uc?export=download&id=1vZwELZZ73fIRKc4-JADXme4ZDFF1Aap5"
-LINK_RESNET = "https://drive.google.com/uc?export=download&id=15aPU02CCXuSiPaBZIlY0F4LPLJCE1-Ck"
-LINK_YOLO = "https://drive.google.com/uc?export=download&id=1nZ3uETiLBCvSvbTgCGyK_pNT4EQsqnGL"
+        with st.spinner(f'Mengunduh model dari Google Drive ke {destination}... (Ini memakan waktu beberapa menit)'):
 
-# Pastikan folder assets/models sudah tercipta di server
+            url = f'https://drive.google.com/uc?id={file_id}'
+
+            gdown.download(url, destination, quiet=False)
+
+
+# Memastikan folder tersedia
 os.makedirs("assets/models", exist_ok=True)
 
-# Download dan simpan langsung ke dalam folder tersebut
-download_file(LINK_CNN, "assets/models/model_cnn.h5")
-download_file(LINK_RESNET, "assets/models/model_resnet.h5")
-download_file(LINK_YOLO, "assets/models/model_yolo.pt")
-# =====================================================================
+# Memanggil fungsi download menggunakan ID File (Bukan link panjang)
+ID_CNN = "1vZwELZZ73fIRKc4-JADXme4ZDFF1Aap5"
+ID_RESNET = "15aPU02CCXuSiPaBZIlY0F4LPLJCE1-Ck"
+ID_YOLO = "1nZ3uETiLBCvSvbTgCGyK_pNT4EQsqnGL"
+
+download_model_gdrive(ID_CNN, "assets/models/model_cnn.h5")
+download_model_gdrive(ID_RESNET, "assets/models/model_resnet.h5")
+download_model_gdrive(ID_YOLO, "assets/models/model_yolo.pt")
 
 # ==========================================
 # FUNGSI BANTUAN UNTUK GAMBAR HTML & PDF
