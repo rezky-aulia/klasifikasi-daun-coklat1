@@ -42,10 +42,13 @@ LINK_CNN = "https://drive.google.com/uc?export=download&id=1vZwELZZ73fIRKc4-JADX
 LINK_RESNET = "https://drive.google.com/uc?export=download&id=15aPU02CCXuSiPaBZIlY0F4LPLJCE1-Ck"
 LINK_YOLO = "https://drive.google.com/uc?export=download&id=1nZ3uETiLBCvSvbTgCGyK_pNT4EQsqnGL"
 
-# Menjalankan fungsi download (Hanya akan mendownload jika file belum ada di server Streamlit)
-download_file(LINK_CNN, "model_cnn.h5")
-download_file(LINK_RESNET, "model_resnet.h5")
-download_file(LINK_YOLO, "model_yolo.pt")
+# Pastikan folder assets/models sudah tercipta di server
+os.makedirs("assets/models", exist_ok=True)
+
+# Download dan simpan langsung ke dalam folder tersebut
+download_file(LINK_CNN, "assets/models/model_cnn.h5")
+download_file(LINK_RESNET, "assets/models/model_resnet.h5")
+download_file(LINK_YOLO, "assets/models/model_yolo.pt")
 # =====================================================================
 
 # ==========================================
