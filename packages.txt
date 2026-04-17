@@ -1,2 +1,2 @@
 libgl1
-libgthread
+libglib2.0-dev
