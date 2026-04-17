@@ -1,0 +1,5 @@
+streamlit
+tensorflow-cpu
+ultralytics
+opencv-python-headless
+pillow
