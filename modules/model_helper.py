@@ -10,7 +10,7 @@ def load_all_models():
 
     cnn = tf.keras.models.load_model('assets/models/model_cnn.h5')
     resnet = tf.keras.models.load_model('assets/models/model_resnet.h5')
-    yolo = YOLO('assets/models/best.pt') 
+    yolo = YOLO('assets/models/model_yolo.pt') 
     return cnn, resnet, yolo
 
 def check_is_leaf_and_predict(image_array, cnn_model, resnet_model, yolo_model, option):
