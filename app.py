@@ -190,7 +190,7 @@ def get_models():
 
 # Sidebar
 st.sidebar.image("https://cdn-icons-png.flaticon.com/512/628/628324.png", width=60) 
-st.sidebar.markdown("<h2 style='text-align:left; margin-top:-10px;'>Botanical AI</h2>", unsafe_allow_html=True)
+st.sidebar.markdown("<h2 style='text-align:left; margin-top:-10px;'>Cocoa Leaf Check</h2>", unsafe_allow_html=True)
 st.sidebar.markdown("---")
 page = st.sidebar.radio("Navigasi Utama:", ["🏠 Beranda", "📊 Riwayat Scan", "📚 Edukasi Penyakit", "👤 About Us"])
 # ==========================================
