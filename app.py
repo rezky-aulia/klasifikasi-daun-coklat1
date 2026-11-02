@@ -27,15 +27,59 @@ st.set_page_config(
 # =====================================================================
 # === TAMBAHAN BARU: LOGIKA DOWNLOAD MODEL DARI GOOGLE DRIVE ===
 # =====================================================================
+
 def download_model_gdrive(file_id, destination):
 
-    if not os.path.exists(destination):
+    os.makedirs(os.path.dirname(destination), exist_ok=True)
 
-        with st.spinner(f'Mengunduh model dari Google Drive ke {destination}... (Ini memakan waktu beberapa menit)'):
+    # Periksa apakah model sudah tersedia
+    if os.path.exists(destination) and os.path.getsize(destination) > 0:
+        print(f"Model sudah tersedia: {destination}")
+        return destination
 
-            url = f'https://drive.google.com/uc?id={file_id}'
+    with st.spinner(f"Mengunduh model: {os.path.basename(destination)}..."):
 
-            gdown.download(url, destination, quiet=False)
+        try:
+            url = f"https://drive.google.com/uc?id={file_id}"
+
+            output = gdown.download(
+                url,
+                output=destination,
+                quiet=False,
+                fuzzy=True
+            )
+
+            # Periksa hasil download
+            if output is None:
+                raise RuntimeError(
+                    f"Google Drive gagal mengunduh {destination}"
+                )
+
+            if not os.path.exists(destination):
+                raise RuntimeError(
+                    f"File tidak ditemukan setelah download: {destination}"
+                )
+
+            if os.path.getsize(destination) == 0:
+                raise RuntimeError(
+                    f"File model kosong: {destination}"
+                )
+
+            return destination
+
+        except Exception as e:
+
+            # Hapus file hasil download yang tidak valid
+            if os.path.exists(destination):
+                os.remove(destination)
+
+            st.error(
+                f"Gagal mengunduh model {os.path.basename(destination)}. "
+                f"Periksa ID file dan izin akses Google Drive. "
+                f"Detail: {e}"
+            )
+
+            st.stop()
 
 
 # Memastikan folder tersedia
