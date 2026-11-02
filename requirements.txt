@@ -1,7 +1,10 @@
 streamlit
+gdown>=5.2.0
 tensorflow-cpu
 ultralytics
 opencv-python-headless
-pillow
+numpy
+pandas
+Pillow
 fpdf
-gdown
+
